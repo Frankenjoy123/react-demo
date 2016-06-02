@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>demo2 输入框聚焦</title>
+    <link rel="stylesheet" type="text/css" href="${scope.static}/react-demo/${scope.assets.demo2.css}"></link>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script src="${scope.static}/react-demo/${scope.assets.demo2.js}"></script>
+  </body>
+</html>

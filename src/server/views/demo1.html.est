@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>demo1 动态增删</title>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script src="${scope.static}/react-demo/${scope.assets.demo1.js}"></script>
+  </body>
+</html>
