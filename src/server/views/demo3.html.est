@@ -3,11 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>demo3 表单</title>
+    <link rel="stylesheet" type="text/css" href="${scope.static}/shieldBase/${scope.assets.shieldBase.css}"></link>
     <link rel="stylesheet" type="text/css" href="${scope.static}/react-demo/${scope.assets.demo3.css}"></link>
-    <link rel="stylesheet" type="text/css" href="${scope.public}/antd.min.css"></link>
   </head>
   <body>
     <div id="content"></div>
+    <script src="${scope.static}/shieldBase/${scope.assets.shieldBase.js}"></script>
     <script src="${scope.static}/react-demo/${scope.assets.demo3.js}"></script>
   </body>
 </html>

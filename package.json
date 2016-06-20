@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "React Demo",
   "scripts": {
-    "build": "npack build --clean .",
+    "build": "npack build --clean . ../shieldBase",
     "watch": "npack build -w --clean .",
     "build-dev": "npack build --dev --clean .",
     "watch-dev": "npack build -w --dev --clean .",
-    "start": "nodemon ./start.js ./dist"
+    "start": "nodemon ./start.js --watch ./dist"
   },
   "author": "zhengfeng.yao@tongdun.cn",
   "license": "ISC",

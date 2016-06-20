@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>demo3 表单</title>
+  </head>
+  <body>
+    <div id="content">${scope.markup || ''}</div>
+    <script src="${scope.static}/react-demo/${scope.assets.demo4.js}"></script>
+  </body>
+</html>
