@@ -2,8 +2,6 @@
  * Created by yzf on 16/5/16.
  */
 import React, { Component } from 'react';
-
-@Form.create()
 export default class App extends Component {
 
   constructor(props) {

@@ -14,7 +14,7 @@ function render(config, name) {
 function main(assets) {
   const config = {
     host: 'localhost',
-    port: 3000,
+    port: 3001,
     public: 'http://localhost:3000',
     static: 'http://localhost:3000/s',
     assets,
