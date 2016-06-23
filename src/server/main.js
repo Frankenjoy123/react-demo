@@ -15,8 +15,8 @@ function main(assets) {
   const config = {
     host: 'localhost',
     port: 3001,
-    public: 'http://localhost:3000',
-    static: 'http://localhost:3000/s',
+    public: 'http://localhost:3001',
+    static: 'http://localhost:3001/s',
     assets,
   };
   const app = new express();
