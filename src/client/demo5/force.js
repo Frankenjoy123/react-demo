@@ -43,7 +43,7 @@ class Node extends Component {
     const { riskStatus, value } = data;
     return (
       <g className={cc.node} transform={`translate(${x}, ${y})`}>
-        <NodeCircle className={cc.pin} status={riskStatus} x={0} y={0}/>
+        <NodeCircle className={cc.icon} status={riskStatus} x={0} y={0}/>
         <text textAnchor='middle' dy={30} dataText={value} fillOpacity={1} style={{fill: 'rgb(51, 51, 51)'}}>
           {value}
         </text>
@@ -57,7 +57,7 @@ class Node extends Component {
     const { type, value, black } = data;
     return (
       <g className={cc.node} transform={`translate(${x}, ${y})`}>
-        <NodeImg className='icon' name={type}
+        <NodeImg className={cc.icon} name={type}
           black={black}
           x={black ? -20 : -15} y={black ? -20 : -15}
           width={black ? 40 : 30} height={black ? 40 : 30}/>
