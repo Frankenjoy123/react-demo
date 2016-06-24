@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>demo5 React-SVG</title>
+    <link rel="stylesheet" type="text/css" href="${scope.static}/react-demo/${scope.assets.demo5.css}"></link>
   </head>
   <body>
     <div id="content"></div>

@@ -1,0 +1,18 @@
+.line {
+  stroke: rgb(204, 204, 204);
+  stroke-width: 1;
+}
+
+.node {
+  cursor: pointer;
+  .icon {
+    transition: transform .2s;
+    &:hover {
+      transform: scale(1.3);
+    }
+  }
+
+  .pin:hover {
+    opacity: .7;
+  }
+}
