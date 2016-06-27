@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { pureRender } from './pureRender';
 import cc from './style.less';
 import _ from 'lodash';
+import * as PubSub from './pubsub';
 const EVENT_TYPE = 1;
 const ATTRIBUTE_TYPE = 2;
 const eventColors = {
@@ -15,12 +16,16 @@ const eventStrokes = {
   Reject: 'rgba(25,116,191,.2)',
 }
 
+const noop = () => {};
+
 @pureRender
 class NodeImg extends Component {
   render() {
-    const { name, black, width, height, x, y } = this.props;
-    return <image className='icon' width={width} height={height} x={x} y={y}
-      xlinkHref={require(`./images/${name}${black ? '_black' : ''}.png`)}/>
+    const { name, black, width, height, x, y, onClick } = this.props;
+    return <image className='icon' width={width} height={height}
+      x={x} y={y}
+      xlinkHref={require(`./images/${name}${black ? '_black' : ''}.png`)}
+      onClick={onClick || noop}/>
   }
 }
 
@@ -28,7 +33,11 @@ class NodeImg extends Component {
 class NodeCircle extends Component {
   render() {
     const { status, x, y, className } = this.props;
-    return <circle className={className} r={16} x={x} y={y} stroke={eventStrokes[status]} strokeWidth={6} fill={eventColors[status]}/>
+    return <circle className={className} r={16}
+      x={x} y={y}
+      stroke={eventStrokes[status]}
+      strokeWidth={6}
+      fill={eventColors[status]}/>
   }
 }
 
@@ -36,43 +45,85 @@ class NodeCircle extends Component {
 class Node extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      dragging: false,
+    }
+  }
+
+  releaseNode = uid => () => {
+    PubSub.dispatch('toggleFixed', {uid, fixed: false});
+  }
+
+  onDragStart = fixed => e => {
+    e.preventDefault();
+    this.setState({ dragging: true, clientX: e.clientX, clientY: e.clientY });
+  }
+
+  onDrag = uid => e => {
+    e.preventDefault();
+    if (this.state.dragging) {
+      PubSub.dispatch('move', { uid, offset: {
+          x: e.clientX - this.state.clientX, y: e.clientY - this.state.clientY
+        }
+      });
+      this.setState({ clientX: e.clientX, clientY: e.clientY });
+    }
+  }
+
+  onDragEnd = uid => e => {
+    e.preventDefault();
+    this.setState({ dragging: false, clientX: e.clientX, clientY: e.clientY });
+    PubSub.dispatch('toggleFixed', { uid, fixed: true });
   }
 
   renderEventNode = () => {
-    const { fixed, x, y, data } = this.props;
-    const { riskStatus, value } = data;
+    const { node } = this.props;
+    const { fixed, x, y } = node;
+    const { riskStatus, value } = node.data;
     return (
-      <g className={cc.node} transform={`translate(${x}, ${y})`}>
+      <g className={cc.node} transform={`translate(${x}, ${y})`}
+        onMouseDown={this.onDragStart(node.fixed).bind(this)}
+        onMouseMove={this.onDrag(node.uid, node.fixed).bind(this)}
+        onMouseUp={this.onDragEnd(node.uid, node.fixed).bind(this)}
+        >
         <NodeCircle className={cc.icon} status={riskStatus} x={0} y={0}/>
-        <text textAnchor='middle' dy={30} dataText={value} fillOpacity={1} style={{fill: 'rgb(51, 51, 51)'}}>
+        <text className={cc.unselectable} textAnchor='middle' dy={30} dataText={value} fillOpacity={1} style={{fill: 'rgb(51, 51, 51)'}}>
           {value}
         </text>
-        <NodeImg className={cc.pin} name='key' x={10} y={-13} width={fixed ? 7 : 0} height={fixed ? 9 : 0}/>
+        <NodeImg className={cc.pin} name='key' x={10} y={-13}
+          width={fixed ? 7 : 0} height={fixed ? 9 : 0}
+          onClick={this.releaseNode(node.uid)}/>
       </g>
     );
   }
 
   renderAttributeNode = () => {
-    const { fixed, x, y, data } = this.props;
-    const { type, value, black } = data;
+    const { node } = this.props;
+    const { fixed, x, y } = node;
+    const { type, value, black } = node.data;
     return (
-      <g className={cc.node} transform={`translate(${x}, ${y})`}>
+      <g className={cc.node} transform={`translate(${x}, ${y})`}
+        onMouseDown={this.onDragStart(node.fixed).bind(this)}
+        onMouseMove={this.onDrag(node.uid, node.fixed).bind(this)}
+        onMouseUp={this.onDragEnd(node.uid, node.fixed).bind(this)}
+        >
         <NodeImg className={cc.icon} name={type}
           black={black}
           x={black ? -20 : -15} y={black ? -20 : -15}
           width={black ? 40 : 30} height={black ? 40 : 30}/>
-        <text textAnchor='middle' dy={black ? 38 : 24} dataText={value} fillOpacity={1} style={{fill: 'rgb(51, 51, 51)'}}>
+        <text className={cc.unselectable} textAnchor='middle' dy={black ? 38 : 24} dataText={value} fillOpacity={1} style={{fill: 'rgb(51, 51, 51)'}}>
           {value}
         </text>
         <NodeImg className={cc.pin} name='key'
           x={black ? 10 : 8} y={black ? -17 : -11}
-          width={fixed ? 7 : 0} height={fixed ? 9 : 0}/>
+          width={fixed ? 7 : 0} height={fixed ? 9 : 0}
+          onClick={this.releaseNode(node.uid)}/>
       </g>
     );
   }
 
   render() {
-    if (this.props.type === EVENT_TYPE) {
+    if (this.props.node.type === EVENT_TYPE) {
       return this.renderEventNode();
     }
     return this.renderAttributeNode();
@@ -117,6 +168,30 @@ export default class Force extends Component {
       nodes: nodes,
       links: links,
     };
+    PubSub.subscribe('toggleFixed', ({uid, fixed}) => {
+      const newNodes = _.cloneDeep(this.state.nodes);
+      const node = newNodes.find(node => node.uid === uid);
+      node.fixed = fixed;
+      this.setState({nodes: newNodes});
+    });
+    PubSub.subscribe('move', ({uid, offset}) => {
+      const newNodes = _.cloneDeep(this.state.nodes);
+      const node = newNodes.find(node => node.uid === uid);
+      node.x += offset.x;
+      node.y += offset.y;
+      const newLinks = _.cloneDeep(this.state.links);
+      newLinks.forEach(link => {
+        if (link.srcUid === uid) {
+          link.x1 = node.x;
+          link.y1 = node.y;
+        }
+        if (link.descUid === uid) {
+          link.x2 = node.x;
+          link.y2 = node.y;
+        }
+      })
+      this.setState({nodes: newNodes, links: newLinks});
+    });
   }
 
   componentWillReceiveProps({nodes, links}) {
@@ -128,7 +203,7 @@ export default class Force extends Component {
       }
 
       if (!node.y) {
-        node.y = Math.random() * 1000;
+        node.y = Math.random() * 500;
       }
     });
     newLinks.forEach(link => {
@@ -144,7 +219,6 @@ export default class Force extends Component {
 
   render() {
     const { nodes, links } = this.state;
-    console.log(nodes, links);
     return <g className='outg'>
       <g>
         {
@@ -153,7 +227,7 @@ export default class Force extends Component {
       </g>
       <g>
         {
-          nodes.map(node => <Node key={node.uid} type={node.type} data={node.data} fixed x={node.x} y={node.y}/>)
+          nodes.map(node => <Node key={node.uid} node={node}/>)
         }
       </g>
     </g>;

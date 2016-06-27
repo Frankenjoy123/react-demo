@@ -9,6 +9,7 @@ const nodes = [{
     value: 'test1',
   },
   type: 1,
+  fixed: true,
 }, {
   uid: 2,
   data: {
@@ -16,7 +17,8 @@ const nodes = [{
     type: 'qqNumber',
     value: '348267823',
   },
-  type: 2
+  type: 2,
+  fixed: true,
 },{
   uid: 3,
   data: {
@@ -24,7 +26,8 @@ const nodes = [{
     type: 'accountMobile',
     value: '15191411451',
   },
-  type: 2
+  type: 2,
+  fixed: false,
 }];
 const links = [{
   srcUid: 2,
