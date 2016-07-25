@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>echarts 团伙分析图谱</title>
+    <link rel="stylesheet" type="text/css" href="${scope.static}/react-demo/${scope.assets.demo6.css}"></link>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script src="${scope.static}/react-demo/${scope.assets.demo6.js}"></script>
+  </body>
+</html>

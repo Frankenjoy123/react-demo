@@ -1,23 +1,13 @@
 {
   "react-demo": {
-    "js": "react-demo.b78a3757d75215dbb77f.js"
+    "js": "react-demo.e31837e0d7e41a0094ee.js"
   },
-  "demo5": {
-    "js": "demo5.3cd3696f4ea886903fee.js",
-    "css": "demo5.3cd3696f4ea886903fee.css"
+  "demo6": {
+    "js": "demo6.049345c04f9a7a05a4e8.js",
+    "css": "demo6.049345c04f9a7a05a4e8.css"
   },
-  "demo2": {
-    "js": "demo2.ef9b10b7cbada44b9390.js",
-    "css": "demo2.ef9b10b7cbada44b9390.css"
-  },
-  "demo4": {
-    "js": "demo4.9c68ba9c3146dc061681.js"
-  },
-  "demo3": {
-    "js": "demo3.c7a1265ee41c05e74c65.js",
-    "css": "demo3.c7a1265ee41c05e74c65.css"
-  },
-  "demo1": {
-    "js": "demo1.74a34f73959fb5678196.js"
+  "demo7": {
+    "js": "demo7.4d1e99545870c54917d7.js",
+    "css": "demo7.4d1e99545870c54917d7.css"
   }
 }

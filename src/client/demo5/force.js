@@ -18,30 +18,21 @@ const eventStrokes = {
 
 const noop = () => {};
 
-@pureRender
-class NodeImg extends Component {
-  render() {
-    const { name, black, width, height, x, y, onClick } = this.props;
-    return <image className='icon' width={width} height={height}
-      x={x} y={y}
-      xlinkHref={require(`./images/${name}${black ? '_black' : ''}.png`)}
-      onClick={onClick || noop}/>
-  }
+function NodeImg({ name, black, width, height, x, y, onClick }) {
+  return <image className='icon' width={width} height={height}
+    x={x} y={y}
+    xlinkHref={require(`./images/${name}${black ? '_black' : ''}.png`)}
+    onClick={onClick || noop}/>;
 }
 
-@pureRender
-class NodeCircle extends Component {
-  render() {
-    const { status, x, y, className } = this.props;
-    return <circle className={className} r={16}
-      x={x} y={y}
-      stroke={eventStrokes[status]}
-      strokeWidth={6}
-      fill={eventColors[status]}/>
-  }
+function NodeCircle({ status, x, y, className }) {
+  return <circle className={className} r={16}
+    x={x} y={y}
+    stroke={eventStrokes[status]}
+    strokeWidth={6}
+    fill={eventColors[status]}/>
 }
 
-@pureRender
 class Node extends Component {
   constructor(props) {
     super(props);
@@ -130,19 +121,10 @@ class Node extends Component {
   }
 }
 
-@pureRender
-class Link extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const { x1, y1, x2, y2 } = this.props;
-    return <line className={cc.line} x1={x1} y1={y1} x2={x2} y2={y2}/>
-  }
+function Link({ x1, y1, x2, y2 }) {
+  return <line className={cc.line} x1={x1} y1={y1} x2={x2} y2={y2}/>
 }
 
-@pureRender
 export default class Force extends Component {
   constructor(props) {
     super(props);

@@ -7,10 +7,10 @@ import path from 'path';
 import Select from '../client/demo4/select';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import dataReader from './dataReader';
 function render(config, name) {
   return require(`./views/${name}.html.est`)(config);
 }
-
 function main(assets) {
   const config = {
     host: 'localhost',
@@ -29,6 +29,11 @@ function main(assets) {
   app.use('/demo4', (req, res) => {
     config.markup = renderToString(<Select />);
     res.send(render(config, 'demo4'));
+  });
+  app.get('/data', (req, res) => {
+    const or = req.query.or;
+    const data = dataReader(path.resolve(process.cwd(), `src/server/${or || 'test2'}`));
+    res.json(data);
   });
 
   app.use('/:name', (req, res) => {
