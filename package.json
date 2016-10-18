@@ -9,7 +9,7 @@
     "watch-dev": "npack build -w --dev --clean . ../shieldBase",
     "start": "nodemon ./start.js --watch ./dist"
   },
-  "author": "zhengfeng.yao@tongdun.cn",
+  "author": "zhengfeng.yao",
   "license": "ISC",
   "dependencies": {
     "angularjs-toaster": "^2.0.0",
